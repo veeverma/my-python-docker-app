@@ -1,0 +1,37 @@
+# A human-readable name for the workflow
+name: Docker Image CI
+
+# This section defines the trigger for the workflow.
+# It will run on every push to the 'main' branch.
+on:
+  push:
+    branches: [ "main" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This job is named 'build-and-push'
+  build-and-push:
+    # The type of runner that the job will run on. We use the latest Ubuntu.
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Step 1: Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Log in to Docker Hub
+    # This uses the secrets we stored in GitHub settings
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    # Step 3: Build the Docker image and push it to Docker Hub
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .        # Use the current directory as the build context
+        push: true        # This tells the action to push after building
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-python-app:latest # Tag the image
