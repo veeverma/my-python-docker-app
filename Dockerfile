@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir \
 #copy rest of the applciation's code and data 
 COPY . . 
 
-# Make port 8888 available to the world outside this container
-EXPOSE 8888
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
 
 # Define environment variable
 ENV NAME World

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-python-app-deployment
+spec:
+  replicas: 3  # Let's run 2 copies of our app!
+  selector:
+    matchLabels:
+      app: my-python-app
+  template:
+    metadata:
+      labels:
+        app: my-python-app
+    spec:
+      containers:
+      - name: my-python-container
+        # IMPORTANT: Use the image from your Docker Hub!
+        image: veeverma/my-python-app:latest
+        # We don't need ports for this simple script, but you would define them here.
